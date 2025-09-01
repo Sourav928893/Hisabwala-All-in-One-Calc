@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".main.toolbox.functions.algebra.currency.CurrencyActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view"
+            style="@style/Widget.Material3.CardView.Elevated"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="700dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="4dp">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/flag_from"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Circle" />
+
+                    <Spinner
+                        android:id="@+id/from_currency_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="8dp"
+                        android:padding="0dp"
+                        app:drawableEndCompat="@drawable/arrow_drop_down"
+                        app:layout_constraintBottom_toTopOf="@+id/name_from"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/flag_from"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <TextView
+                        android:id="@+id/name_from"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/from_currency_spinner"
+                        app:layout_constraintTop_toBottomOf="@+id/from_currency_spinner" />
+
+                    <EditText
+                        android:id="@+id/amount_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:background="@android:color/transparent"
+                        android:gravity="center_vertical|end"
+                        android:importantForAutofill="no"
+                        android:inputType="numberDecimal"
+                        android:maxLength="19"
+                        android:maxLines="1"
+                        android:paddingTop="8dp"
+                        android:singleLine="true"
+                        android:textAlignment="gravity"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/guideline12"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="LabelFor" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="36dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/flag_to"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Circle" />
+
+                    <Spinner
+                        android:id="@+id/to_currency_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="8dp"
+                        android:padding="0dp"
+                        app:drawableEndCompat="@drawable/arrow_drop_down"
+                        app:layout_constraintBottom_toTopOf="@+id/name_to"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline13"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/flag_to"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <TextView
+                        android:id="@+id/name_to"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/to_currency_spinner"
+                        app:layout_constraintTop_toBottomOf="@+id/to_currency_spinner" />
+
+
+                    <HorizontalScrollView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:scrollbars="none"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline13"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/result_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="end"
+                            android:gravity="end|center_vertical"
+                            android:hint="0"
+                            android:maxLines="1"
+                            android:paddingTop="8dp"
+                            android:textAlignment="gravity"
+                            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                            android:textIsSelectable="true"
+                            tools:ignore="HardcodedText" />
+                    </HorizontalScrollView>
+
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <ImageView
+                    android:id="@+id/switchCurrency"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/combined_drawable_swap_vert"
+                    app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:text="@string/ecb"
+            android:textAlignment="center"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/card_view"
+            app:layout_constraintStart_toStartOf="@+id/card_view"
+            app:layout_constraintTop_toBottomOf="@+id/card_view"
+            tools:ignore="SmallSp" />
+
+        <ListView
+            android:id="@+id/list_view_currency"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:nestedScrollingEnabled="true"
+            android:scrollIndicators="none"
+            android:scrollbars="none"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_min="400dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:layout_constraintWidth_max="700dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
