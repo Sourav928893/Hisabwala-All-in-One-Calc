@@ -32,7 +32,7 @@
 
 ## 📷 Screenshots
 
-<img src="https://github.com/YangDai2003/Multi-Calculator-Android/assets/107718193/1f0cd1a6-e1db-45a5-828e-16c9864d9ab9" width="15%" alt=""/>
+<img src="https://github.com/Sourav928893/Hisabwala-All-in-One-Calc/blob/master/288493183-1f0cd1a6-e1db-45a5-828e-16c9864d9ab9.png" width="15%" alt=""/>
 <img src="https://github.com/YangDai2003/Multi-Calculator-Android/assets/107718193/99810edf-2087-4665-b1aa-8ebd3f8f78bd" width="15%" alt=""/>
 <img src="https://github.com/YangDai2003/Multi-Calculator-Android/assets/107718193/93cc1cbd-a8ae-4e30-ab79-8b123ea47381" width="15%" alt=""/>
 <img src="https://github.com/YangDai2003/Multi-Calculator-Android/assets/107718193/f73e1ec3-af02-45f9-be7c-02ed0c5384df" width="15%" alt=""/>
