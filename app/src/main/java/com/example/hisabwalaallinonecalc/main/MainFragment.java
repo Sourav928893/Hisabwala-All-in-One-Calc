@@ -1,7 +1,5 @@
 package com.example.hisabwalaallinonecalc.main;
 
-
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +10,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 
 import com.example.hisabwalaallinonecalc.R;
 import com.example.hisabwalaallinonecalc.main.calculator.CalculatorFragment;
@@ -26,6 +23,7 @@ import java.util.List;
  */
 public class MainFragment extends Fragment {
     private MyPagerAdapter myPagerAdapter;
+    private ViewPager2 viewPager2;
 
     public MainFragment() {
     }
@@ -41,6 +39,12 @@ public class MainFragment extends Fragment {
         fragments.add(HistoryListFragment.newInstance());
         fragments.add(CalculatorFragment.newInstance());
         myPagerAdapter = new MyPagerAdapter(getChildFragmentManager(), getLifecycle(), fragments);
+
+        getParentFragmentManager().setFragmentResultListener("show_history", this, (requestKey, result) -> {
+            if (viewPager2 != null) {
+                viewPager2.setCurrentItem(0);
+            }
+        });
     }
 
     @Override
@@ -52,7 +56,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewPager2 viewPager2 = view.findViewById(R.id.view_pager);
+        viewPager2 = view.findViewById(R.id.view_pager);
         viewPager2.setAdapter(myPagerAdapter);
         viewPager2.setPageTransformer(new DepthPageTransformer());
         viewPager2.setCurrentItem(1, false);

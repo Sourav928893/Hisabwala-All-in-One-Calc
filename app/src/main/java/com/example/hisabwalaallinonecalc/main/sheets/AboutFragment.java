@@ -144,7 +144,7 @@ public class AboutFragment extends Fragment {
                     startActivity(intent);
                 }
             } catch (Exception e) {
-                Toast.makeText(requireContext(), "Unable to Open Razorpay Link.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.open_link_failed, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -158,8 +158,8 @@ public class AboutFragment extends Fragment {
         view.findViewById(R.id.about_email).setOnClickListener(v -> {
             Uri uri = Uri.parse("mailto:ittrainer156@gmail.com");
             Intent email = new Intent(Intent.ACTION_SENDTO, uri);
-            email.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
-            startActivity(Intent.createChooser(email, "Feedback (E-mail)"));
+            email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback));
+            startActivity(Intent.createChooser(email, getString(R.string.feedback_with_email)));
         });
 
         // Privacy Policy

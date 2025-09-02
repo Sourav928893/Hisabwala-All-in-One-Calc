@@ -91,9 +91,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.historys) {
-            if (viewPager != null) {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() == 0 ? 1 : 0);
-            }
+            getSupportFragmentManager().setFragmentResult("show_history", new Bundle());
             return true;
 
         } else if (item.getItemId() == R.id.resize) {

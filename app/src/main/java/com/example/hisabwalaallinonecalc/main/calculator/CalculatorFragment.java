@@ -1,42 +1,45 @@
 package com.example.hisabwalaallinonecalc.main.calculator;
 
-
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
-
-
 import static com.example.hisabwalaallinonecalc.main.calculator.CalculatorUtils.highlightSpecialSymbols;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
-
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.example.hisabwalaallinonecalc.R;
 import com.example.hisabwalaallinonecalc.utils.TTS;
 import com.example.hisabwalaallinonecalc.utils.TTSInitializationListener;
 import com.example.hisabwalaallinonecalc.utils.TouchAnimation;
 
+import java.util.ArrayList;
+import java.util.Locale;
 
-/**
- * @author 30415
- */
 public class CalculatorFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener
         , View.OnClickListener, TTSInitializationListener {
     private TextView inputView;
@@ -54,6 +57,26 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
             R.id.three, R.id.two, R.id.one, R.id.dot, R.id.zero, R.id.equal, R.id.Clean};
     private CalculatorViewModel viewModel;
 
+    private final ActivityResultLauncher<Intent> speechRecognizerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    ArrayList<String> speechResult = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    if (speechResult != null && !speechResult.isEmpty()) {
+                        inputView.setText(speechResult.get(0));
+                    }
+                }
+            });
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    launchSpeechRecognizer();
+                } else {
+                    Toast.makeText(getContext(), "Permission for speech recognition denied.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
     public CalculatorFragment() {
     }
 
@@ -70,7 +93,6 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_calculator, container, false);
     }
 
@@ -83,7 +105,6 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
         defaultSp.registerOnSharedPreferenceChangeListener(this);
         historySp = requireActivity().getSharedPreferences("history", MODE_PRIVATE);
 
-        // 初始化TextToSpeech对象
         tts = new TTS();
         ttsAvailable = tts.ttsCreate(requireActivity(), this);
 
@@ -92,14 +113,10 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
         color = outputView.getTextColors();
         outputView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -121,19 +138,27 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
             }
         }
 
+        ImageButton microphoneButton = view.findViewById(R.id.microphone);
+        microphoneButton.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(), Manifest.permission.RECORD_AUDIO) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                launchSpeechRecognizer();
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO);
+            }
+        });
+
         updateSpeaker();
 
-        // 处理历史记录点击结果
         getParentFragmentManager().setFragmentResultListener("requestKey", getViewLifecycleOwner(), (requestKey, bundle) -> {
             if (null != bundle.getString("select")) {
                 String selected = bundle.getString("select");
-                // 负数加括号
                 if (selected != null && selected.contains("-")) {
                     selected = "(" + selected + ")";
                 }
                 String inputtedEquation = inputView.getText().toString();
                 if (inputtedEquation.isEmpty()) {
-                    // 输入框为空，直接显示点击的历史记录
                     inputView.setText(selected);
                 } else {
                     char last = inputtedEquation.charAt(inputtedEquation.length() - 1);
@@ -167,7 +192,6 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
             }
         } else if ("scale".equals(s) || "mode".equals(s)) {
             String inputStr1 = inputView.getText().toString();
-            //自动运算
             boolean useDeg = defaultSp.getBoolean("mode", false);
             if (!inputStr1.isEmpty()) {
                 Calculator formulaUtil1 = new Calculator(useDeg);
@@ -177,11 +201,22 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
         }
     }
 
+    private void launchSpeechRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.speech_prompt));
+        try {
+            speechRecognizerLauncher.launch(intent);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         tts.ttsDestroy();
-        // 在语言变化时重新初始化TextToSpeech对象
         ttsAvailable = tts.ttsCreate(requireActivity(), this);
         updateSpeaker();
     }
@@ -189,7 +224,6 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // 释放TextToSpeech资源
         tts.ttsDestroy();
         defaultSp.unregisterOnSharedPreferenceChangeListener(this);
     }
@@ -201,7 +235,6 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
         boolean useDeg = defaultSp.getBoolean("mode", false);
         boolean canSpeak = defaultSp.getBoolean("voice", false);
 
-        //获取输入
         String inputStr = inputView.getText().toString();
         Calculator formulaUtil = new Calculator(useDeg);
 
@@ -233,6 +266,11 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
                     tts.ttsSpeak(getString(R.string.inverse));
                 }
                 viewModel.handleInverseButton(inputStr);
+            } else if (v.getId() == R.id.time) {
+                if (canSpeak) {
+                    tts.ttsSpeak(getString(R.string.power));
+                }
+                viewModel.handleOtherButtons(v, inputStr, canSpeak, tts, fromUser);
             } else if (v.getId() == R.id.switchViews) {
                 View view = requireView();
                 if (!switched) {
@@ -276,22 +314,12 @@ public class CalculatorFragment extends Fragment implements SharedPreferences.On
     }
 
     private void updateSpeaker() {
-        try {
-            ImageButton readoutButton = requireView().findViewById(R.id.speak);
-            if (!ttsAvailable) {
-                readoutButton.setVisibility(View.INVISIBLE);
-            } else {
-                readoutButton.setVisibility(View.VISIBLE);
-                readoutButton.bringToFront();
-                readoutButton.setOnClickListener(v -> {
-                    if (!inputView.getText().toString().isEmpty() && !outputView.getText().toString().isEmpty()) {
-                        String text = inputView.getText().toString() + "= " + outputView.getText().toString();
-                        tts.ttsSpeak(text);
-                    }
-                });
-            }
-        } catch (Exception e) {
-            Log.e("updateSpeaker", e.toString());
+        ImageButton microphoneButton = requireView().findViewById(R.id.microphone);
+        if (!ttsAvailable) {
+            microphoneButton.setVisibility(View.INVISIBLE);
+        } else {
+            microphoneButton.setVisibility(View.VISIBLE);
+            microphoneButton.bringToFront();
         }
     }
 }

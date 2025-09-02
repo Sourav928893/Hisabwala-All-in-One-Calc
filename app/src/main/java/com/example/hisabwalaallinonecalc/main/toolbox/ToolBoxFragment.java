@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hisabwalaallinonecalc.R;
+import com.example.hisabwalaallinonecalc.main.toolbox.functions.PercentageActivity;
 import com.example.hisabwalaallinonecalc.main.toolbox.functions.algebra.bmi.BMIActivity;
 import com.example.hisabwalaallinonecalc.main.toolbox.functions.algebra.chinese.ChineseNumberConversionActivity;
 import com.example.hisabwalaallinonecalc.main.toolbox.functions.algebra.compass.Compass;
@@ -77,6 +78,7 @@ public class ToolBoxFragment extends Fragment {
         items.add(new ToolBoxItem(Constants.FRACTION_ACTIVITY_ID, getString(R.string.numberConvert), AppCompatResources.getDrawable(requireContext(), R.drawable.fraction)));
         items.add(new ToolBoxItem(Constants.PROGRAMMER_ACTIVITY_ID, getString(R.string.programmer), AppCompatResources.getDrawable(requireContext(), R.drawable.binary_icon)));
         items.add(new ToolBoxItem(Constants.RULER_ACTIVITY_ID, getString(R.string.ruler), AppCompatResources.getDrawable(requireContext(), R.drawable.ruler_icon)));
+        items.add(new ToolBoxItem(Constants.PERCENTAGE_ACTIVITY_ID, getString(R.string.percentage_calculator), AppCompatResources.getDrawable(requireContext(), R.drawable.ic_percentage)));
         return items;
     }
 
@@ -230,13 +232,16 @@ public class ToolBoxFragment extends Fragment {
             case Constants.RULER_ACTIVITY_ID:
                 intent = new Intent(getContext(), RulerActivity.class);
                 break;
+            case Constants.PERCENTAGE_ACTIVITY_ID:
+                intent = new Intent(getContext(), PercentageActivity.class);
+                break;
         }
         if (intent != null) startActivity(intent);
     }
 
 
     private static class Constants {
-        public static final String ORDER = "0/1/2/3/4/5/6/7/8/9/10/11/12/13/14";
+        public static final String ORDER = "0/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15";
         public static final int UNIT_ACTIVITY_ID = 0;
         public static final int DATE_RANGE_ACTIVITY_ID = 1;
         public static final int FINANCE_ACTIVITY_ID = 2;
@@ -252,5 +257,6 @@ public class ToolBoxFragment extends Fragment {
         public static final int FRACTION_ACTIVITY_ID = 12;
         public static final int PROGRAMMER_ACTIVITY_ID = 13;
         public static final int RULER_ACTIVITY_ID = 14;
+        public static final int PERCENTAGE_ACTIVITY_ID = 15;
     }
 }
