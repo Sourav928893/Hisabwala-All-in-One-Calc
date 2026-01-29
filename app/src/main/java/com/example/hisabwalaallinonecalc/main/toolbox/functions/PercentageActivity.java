@@ -1,7 +1,8 @@
 package com.example.hisabwalaallinonecalc.main.toolbox.functions;
 
 import android.os.Bundle;
-import android.widget.Button;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,82 +14,98 @@ import java.util.Objects;
 
 public class PercentageActivity extends AppCompatActivity {
 
-    private TextInputEditText percentageInput;
-    private TextInputEditText numberInput;
-    private TextView resultView;
+    private TextInputEditText percentInput1, valueInput1, valueInput2X, valueInput2Y;
+    private TextView result1, result2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_percentage);
 
-        percentageInput = findViewById(R.id.percentage_input);
-        numberInput = findViewById(R.id.number_input);
-        resultView = findViewById(R.id.result_view);
+        // Card 1 Views
+        percentInput1 = findViewById(R.id.percent_input1);
+        valueInput1 = findViewById(R.id.value_input1);
+        result1 = findViewById(R.id.result1);
 
-        Button calculateButton = findViewById(R.id.calculate_button);
-        Button increaseButton = findViewById(R.id.increase_button);
-        Button decreaseButton = findViewById(R.id.decrease_button);
+        // Card 2 Views
+        valueInput2X = findViewById(R.id.value_input2_x);
+        valueInput2Y = findViewById(R.id.value_input2_y);
+        result2 = findViewById(R.id.result2);
 
-        calculateButton.setOnClickListener(v -> calculatePercentage());
-        increaseButton.setOnClickListener(v -> calculateIncrease());
-        decreaseButton.setOnClickListener(v -> calculateDecrease());
+        TextWatcher textWatcher1 = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calculatePercentageOfValue();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+
+        percentInput1.addTextChangedListener(textWatcher1);
+        valueInput1.addTextChangedListener(textWatcher1);
+
+        TextWatcher textWatcher2 = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calculateWhatPercentOfValue();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+
+        valueInput2X.addTextChangedListener(textWatcher2);
+        valueInput2Y.addTextChangedListener(textWatcher2);
     }
 
-    private void calculatePercentage() {
-        String percentageStr = Objects.requireNonNull(percentageInput.getText()).toString();
-        String numberStr = Objects.requireNonNull(numberInput.getText()).toString();
+    private void calculatePercentageOfValue() {
+        String percentStr = Objects.requireNonNull(percentInput1.getText()).toString();
+        String valueStr = Objects.requireNonNull(valueInput1.getText()).toString();
 
-        if (percentageStr.isEmpty() || numberStr.isEmpty()) {
-            resultView.setText(R.string.enter_values);
+        if (percentStr.isEmpty() || valueStr.isEmpty()) {
+            result1.setText("Result");
             return;
         }
 
         try {
-            double percentage = Double.parseDouble(percentageStr);
-            double number = Double.parseDouble(numberStr);
-            double result = (percentage / 100) * number;
-            resultView.setText(String.valueOf(result));
+            double percent = Double.parseDouble(percentStr);
+            double value = Double.parseDouble(valueStr);
+            double calculatedResult = (percent / 100) * value;
+            result1.setText(String.valueOf(calculatedResult));
         } catch (NumberFormatException e) {
-            resultView.setText(R.string.invalid_input);
+            result1.setText("Invalid input");
         }
     }
 
-    private void calculateIncrease() {
-        String percentageStr = Objects.requireNonNull(percentageInput.getText()).toString();
-        String numberStr = Objects.requireNonNull(numberInput.getText()).toString();
+    private void calculateWhatPercentOfValue() {
+        String valueXStr = Objects.requireNonNull(valueInput2X.getText()).toString();
+        String valueYStr = Objects.requireNonNull(valueInput2Y.getText()).toString();
 
-        if (percentageStr.isEmpty() || numberStr.isEmpty()) {
-            resultView.setText(R.string.enter_values);
+        if (valueXStr.isEmpty() || valueYStr.isEmpty()) {
+            result2.setText("Result");
             return;
         }
 
         try {
-            double percentage = Double.parseDouble(percentageStr);
-            double number = Double.parseDouble(numberStr);
-            double result = number + ((percentage / 100) * number);
-            resultView.setText(String.valueOf(result));
+            double valueX = Double.parseDouble(valueXStr);
+            double valueY = Double.parseDouble(valueYStr);
+
+            if (valueY == 0) {
+                result2.setText("Cannot divide by zero");
+                return;
+            }
+
+            double calculatedResult = (valueX / valueY) * 100;
+            result2.setText(String.format("%.2f%%", calculatedResult));
         } catch (NumberFormatException e) {
-            resultView.setText(R.string.invalid_input);
-        }
-    }
-
-    private void calculateDecrease() {
-        String percentageStr = Objects.requireNonNull(percentageInput.getText()).toString();
-        String numberStr = Objects.requireNonNull(numberInput.getText()).toString();
-
-        if (percentageStr.isEmpty() || numberStr.isEmpty()) {
-            resultView.setText(R.string.enter_values);
-            return;
-        }
-
-        try {
-            double percentage = Double.parseDouble(percentageStr);
-            double number = Double.parseDouble(numberStr);
-            double result = number - ((percentage / 100) * number);
-            resultView.setText(String.valueOf(result));
-        } catch (NumberFormatException e) {
-            resultView.setText(R.string.invalid_input);
+            result2.setText("Invalid input");
         }
     }
 }

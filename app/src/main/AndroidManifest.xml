@@ -46,7 +46,7 @@
         tools:targetApi="tiramisu">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-4041401840560784~1234567890"/>
+            android:value="ca-app-pub-4041401840560784~4562235884"/>
 
 
         <!-- Toolbox Activities -->

@@ -1,4 +1,3 @@
-// MainActivity.java
 package com.example.hisabwalaallinonecalc.main;
 
 import android.annotation.SuppressLint;
@@ -42,6 +41,8 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.elevation.SurfaceColors;
@@ -60,11 +61,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private ImageView pageIcon;
     private SharedPreferences defaultSharedPrefs;
 
-    // ✅ Your real AdMob Banner Ad Unit ID
-    private static final String AD_UNIT_ID = "ca-app-pub-4041401840560784/5739586189";
+    private static final String BANNER_AD_UNIT_ID = "ca-app-pub-4041401840560784/3625500640";
+    private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-4041401840560784/4853286984";
 
     private AdView adView;
     private FrameLayout adContainerView;
+    private InterstitialAd mInterstitialAd;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -156,28 +158,21 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             return insets;
         });
 
-        // ✅ Setup AdMob Banner with your ID
-        adContainerView = findViewById(R.id.ad_container);
+        // Initialize AdMob
         MobileAds.initialize(this, initializationStatus -> {});
+
+        // Banner Ad
+        adContainerView = findViewById(R.id.ad_container);
         adView = new AdView(this);
-        adView.setAdUnitId(AD_UNIT_ID);
+        adView.setAdUnitId(BANNER_AD_UNIT_ID);
         AdSize adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, 360);
         adView.setAdSize(adSize);
         adContainerView.removeAllViews();
         adContainerView.addView(adView);
         adView.loadAd(new AdRequest.Builder().build());
 
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                Log.i("AdMob", "✅ Ad loaded successfully.");
-            }
-
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                Log.e("AdMob", "❌ Ad failed: " + adError.getMessage());
-            }
-        });
+        // Interstitial Ad
+        loadInterstitialAd();
 
         // Preferences
         defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -196,6 +191,32 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             currentPosition = currentPosition == 0 ? 1 : 0;
             viewPager.setCurrentItem(currentPosition, true);
         });
+    }
+
+    private void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this, INTERSTITIAL_AD_UNIT_ID, adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        mInterstitialAd = interstitialAd;
+                        Log.i("AdMob", "Interstitial ad loaded successfully.");
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        Log.e("AdMob", "Interstitial ad failed to load: " + loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+    }
+
+    private void showInterstitialAd() {
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(this);
+        } else {
+            Log.d("AdMob", "The interstitial ad wasn't ready yet.");
+        }
     }
 
     private void setupToolbar() {
