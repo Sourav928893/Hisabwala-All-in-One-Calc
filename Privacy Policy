@@ -1,36 +1,91 @@
-## Privacy Policy of Multi-Calculator
+Privacy Policy – Multi-Calculator App
 
-This is an open source Android app developed by Sourav Kaushik. The source code is available on GitHub .
-### Data collected by apps and third-party SDKs
+Last updated: February 2026
 
-Multi-Calculator itself does not collect user confidential data and personal information such as address, name and E-Mail.
+Multi-Calculator (“the App”) is an Android application developed by Sourav Kaushik.
+We respect your privacy and are committed to protecting it. This Privacy Policy explains how information is handled when you use our app.
 
-Third-party SDKs will be explained in the following table:
+1. Information Collection and Use
 
+Multi-Calculator is designed to work offline and does not require user registration.
 
-| SDK name | Purpose of using SDK                           | Data collected by SDK                                           |
-|:--------:|------------------------------------------------|-----------------------------------------------------------------|
-| Firebase | Analyze application crashes and ANR situations | Device model, OS version, code crash location and error message |
+🔹 Personal Data
 
-[Firebase Terms of Service](https://firebase.google.com/terms)
+We do not collect, store, or share any personal or sensitive user data, such as:
 
-### Permissions requested in the app
+Name
 
-The list of permissions required by the app can be found in the `AndroidManifest.xml` file:
+Email address
 
-https://github.com/Sourav928893/Hisabwala-All-in-One-Calc/blob/master/app/src/main/AndroidManifest.xml
-<br/>
+Phone number
 
+Address
 
-|                                       Permission                                        | Purpose                                                   |
-|:---------------------------------------------------------------------------------------:|-----------------------------------------------------------|
-|                              `android.permission.VIBRATE`                               | Used to provide vibration feedback when operating buttons |
-| `android.permission.ACCESS_COARSE_LOCATION` , `android.permission.ACCESS_FINE_LOCATION` | Used to provide compass functionality                     |
-|                              `android.permission.INTERNET`                              | Used to obtain real-time exchange rate data               |
-|                        `android.permission.SYSTEM_ALERT_WINDOW`                         | Used to evoke third-party application windows             |
-|                       `android.permission.SYSTEM_OVERLAY_WINDOW`                        | Used to provide floating window function                  |
-|                        `com.google.android.gms.permission.AD_ID`                        | Used to declare firebase                                  |
+Contacts
 
- <hr style="border:1px solid gray">
+Photos or files
 
-If you have any questions about this Policy or personal information protection, you can send your written questions, opinions, or suggestions to the following E-Mail address: ittrainer156@gmail.com
+All calculations and app usage remain on the user’s device only.
+
+2. Third-Party Services
+
+The app uses limited third-party services to improve performance and stability.
+
+Firebase (Google LLC)
+
+Firebase is used only for:
+
+App crash reporting
+
+Performance monitoring
+
+Improving app stability
+
+Data collected by Firebase may include:
+
+Device model
+
+Android OS version
+
+App crash logs and error messages
+
+This data is anonymous and cannot identify users personally.
+
+👉 Firebase Privacy Policy:
+https://firebase.google.com/policies/privacy
+
+3. Permissions Used by the App
+
+The app requests the following permissions only for functional purposes:
+
+Permission	Purpose
+android.permission.INTERNET	To fetch real-time data such as currency or calculation-related info
+android.permission.VIBRATE	To provide vibration feedback
+android.permission.ACCESS_COARSE_LOCATION	Used only if calculator features require basic location (e.g., regional calculations)
+android.permission.ACCESS_FINE_LOCATION	Same as above, only if enabled by the user
+android.permission.SYSTEM_ALERT_WINDOW	To support floating calculator features
+com.google.android.gms.permission.AD_ID	Used by Firebase services (no personalized ads shown)
+
+🔒 Location data is NOT stored or shared.
+
+4. Data Security
+
+We value your trust. Since the app does not store personal data, there is no risk of data leakage or misuse from our side.
+
+5. Children’s Privacy
+
+This app does not knowingly collect any data from children under the age of 13.
+If you believe a child has provided personal information, please contact us so we can take action.
+
+6. Changes to This Privacy Policy
+
+This policy may be updated from time to time.
+Any changes will be reflected on this page with an updated date.
+
+7. Contact Us
+
+If you have any questions or concerns about this Privacy Policy, please contact:
+
+📧 Email: ittrainer156@gmail.com
+
+👤 Developer: Sourav Kaushik
